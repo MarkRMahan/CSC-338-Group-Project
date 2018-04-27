@@ -1,4 +1,3 @@
-
 """
 Authors: Mark Mahan, Zackh Tucker, Taylor Cook, Tim McCoy
 Group Project Code
