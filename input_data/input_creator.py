@@ -26,8 +26,6 @@ def main():
                     dictionary[x] = ["{},{}".format(i, weight)]
                     dictionary_to_read[x] = [" Node: {:<3} Cost: {:<3} |".format(i, weight)]
 
-
-
     #Gets rid of duplicates
     for key,value in dictionary.items():
         connections = set()
@@ -65,14 +63,10 @@ def main():
         dictionary_to_read[key] = input_lyst
         #print(dictionary[key])
             
-
     output = []
     output.append(dictionary)
     output.append(dictionary_to_read)
     return output
-
-
-
 
 if __name__ == '__main__':
     for i in range(10):
