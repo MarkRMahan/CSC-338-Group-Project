@@ -2,17 +2,17 @@ import random
 '''Creates 100 random graphs to run dijkstra's on'''
 
 def main():
-    num_nodes = 10 #random.randint(10, 1000)
+    num_nodes = 1000 #random.randint(10, 1000)
     dictionary = {}
     dictionary_to_read = {}
     for i in range(1, num_nodes + 1): #Node
         bound = random.randint(2, num_nodes)
-        for x in range(random.randint(1, bound) - 1, bound): #Node i is connected to
+        for x in range(random.randint(2, bound) - 1, bound): #Node i is connected to
             #print(no_extra_paths)
             if x == i: #Prevents paths to the node itself and multiple paths to the same node
                 continue
             else:
-                weight = random.randint(1,8)
+                weight = random.randint(5,10)
                 if i in dictionary:
                     dictionary[i].append("{},{}".format(x, weight))
                     dictionary_to_read[i].append(" Node: {:<3} Cost: {:<3} |".format(x, weight))
@@ -25,6 +25,8 @@ def main():
                 else:
                     dictionary[x] = ["{},{}".format(i, weight)]
                     dictionary_to_read[x] = [" Node: {:<3} Cost: {:<3} |".format(i, weight)]
+
+
 
     #Gets rid of duplicates
     for key,value in dictionary.items():
@@ -63,10 +65,14 @@ def main():
         dictionary_to_read[key] = input_lyst
         #print(dictionary[key])
             
+
     output = []
     output.append(dictionary)
     output.append(dictionary_to_read)
     return output
+
+
+
 
 if __name__ == '__main__':
     for i in range(10):
