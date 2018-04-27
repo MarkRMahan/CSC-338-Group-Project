@@ -5,7 +5,7 @@ def main():
     num_nodes = 10 #random.randint(10, 1000)
     dictionary = {}
     dictionary_to_read = {}
-    for i in range(num_nodes): #Node
+    for i in range(1, num_nodes + 1): #Node
         bound = random.randint(2, num_nodes)
         for x in range(random.randint(1, bound) - 1, bound): #Node i is connected to
             #print(no_extra_paths)
@@ -28,26 +28,47 @@ def main():
 
 
 
-    no_duplicates = {}
     #Gets rid of duplicates
     for key,value in dictionary.items():
         connections = set()
-        print(value)
+        correct_lyst = []
+        input_lyst = []
         for i in value:
             value_prime = i.split(',')[0]
-            if value_prime not in connections:
-                no_duplicates[key] = value
-                connections.add(value_prime)
+            correct_lyst.append(value_prime)
+        index = 0
+        for relation in value:
+            if correct_lyst[index] not in connections:
+                connections.add(correct_lyst[index])
+                input_lyst.append(relation)
+            index += 1
+            
+        #print(dictionary[key])
+        dictionary[key] = input_lyst
+        #print(dictionary[key])
 
-    no_duplicates_to_read = {}
     for key,value in dictionary_to_read.items():
-        if value not in no_duplicates_to_read.values():
-            no_duplicates_to_read[key] = value
+        connections = set()
+        correct_lyst = []
+        input_lyst = []
+        for i in value:
+            value_prime = i.split(' ')[2]
+            correct_lyst.append(value_prime)
+        index = 0
+        for relation in value:
+            if correct_lyst[index] not in connections:
+                connections.add(correct_lyst[index])
+                input_lyst.append(relation)
+            index += 1
+            
+        #print(dictionary[key])
+        dictionary_to_read[key] = input_lyst
+        #print(dictionary[key])
             
 
     output = []
-    output.append(no_duplicates)
-    output.append(no_duplicates_to_read)
+    output.append(dictionary)
+    output.append(dictionary_to_read)
     return output
 
 
@@ -71,4 +92,3 @@ if __name__ == '__main__':
                     node += " " + connected
 
                 f.write(node + "\n")
-                
