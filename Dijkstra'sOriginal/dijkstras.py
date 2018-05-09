@@ -50,4 +50,8 @@ def main():
 
     print(answer)
 
-main()
+if __name__ == "__main__":
+    start = time.time()
+    main()
+    elapsed_time = time.time() - start
+    print("Elapsed time: {}".format(elapsed_time))
