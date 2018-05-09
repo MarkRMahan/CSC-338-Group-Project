@@ -3,9 +3,45 @@ Authors: Mark Mahan, Zackh Tucker, Taylor Cook, Tim McCoy
 Group Project Code
 Parallelizing Dijkstra's algorithm in Python
 """
-
-
 import argparse
+import sys
+import random
+import time
+import statistics as stats
+import multiprocessing as mp
+
+#q = mp.Queue()
+
+def dij(i, nodes):
+    #Prepping for Dijkstra's Algorithm
+    path_lengths = []
+    X = [] #Processed vertices
+    for element in nodes:
+        path_lengths.append(1000000)
+    path_lengths[i-1] = 0 #Set the starting node -> starting node to 0
+    X.append(str(i))
+
+    #Dijkstra's Magical Algorithm
+    while len(X) < len(path_lengths):
+        for reached_node in X:
+            for edge in nodes[reached_node]:
+                candidate = path_lengths[int(reached_node) - 1] + int(edge[-1])
+                if candidate < path_lengths[int(edge[0]) - 1] or edge[0] not in X:
+                    X.append(edge[0])
+                    path_lengths[int(edge[0]) - 1] = candidate
+
+    #Used to get the output in the correct format
+    counter = 1
+    answer = "{}\t".format(i)
+    for distance in path_lengths:
+        if counter != len(path_lengths):
+            answer += str(distance) + ","
+            counter += 1
+        else:
+            answer += str(distance)
+
+    print(answer)
+    #q.put(answer)
 
 def main():
     arg_parser = argparse.ArgumentParser(description='Print the given input file.')
@@ -20,34 +56,12 @@ def main():
         for element in index.split():
             if index.split()[0] != element:
                 nodes[index.split()[0]].append(element.split(","))
-    #print(nodes)
-    #Prepping for Dijkstra's Algorithm
-    path_lengths = []
-    X = [] #Processed vertices
-    for element in nodes:
-        path_lengths.append(1000000)
-    path_lengths[0] = 0
-    X.append('1')
-    
-    #Dijkstra's Magical Algorithm
-    while len(X) < len(path_lengths):
-        for reached_node in X:
-            for edge in nodes[reached_node]:
-                candidate = path_lengths[int(reached_node) - 1] + int(edge[-1])
-                if candidate < path_lengths[int(edge[0]) - 1] or edge[0] not in X:
-                    X.append(edge[0])
-                    path_lengths[int(edge[0]) - 1] = candidate
 
-    #Used to get the output in the correct format
-    counter = 1
-    answer = ""
-    for distance in path_lengths:
-        if counter != len(path_lengths):
-            answer += str(distance) + ","
-            counter += 1
-        else:
-            answer += str(distance)
+    for i in range(1, len(nodes)+1):    #Find each node to each other node paths
+        dij(i, nodes)
 
-    print(answer)
-
-main()
+if __name__ == "__main__":
+    start = time.time()
+    main()
+    elapsed_time = time.time() - start
+    print("Elapsed time: {}".format(elapsed_time))
