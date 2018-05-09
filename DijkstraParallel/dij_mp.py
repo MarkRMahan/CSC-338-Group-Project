@@ -7,10 +7,10 @@ import argparse
 import sys
 import time
 import multiprocessing as mp
-dict_list=[]
+
 dict = {}
 
-def dij(start, end, nodes, dict, dict_list):
+def dij(start, end, nodes, dict):
     for i in range(start, end):
         #Prepping for Dijkstra's Algorithm
         path_lengths = []
@@ -37,8 +37,8 @@ def dij(start, end, nodes, dict, dict_list):
             else:
                 answer += str(counter)+"," +str(distance)
         dict[i] = answer
-        dict_list[i] = dict[i]
-        #print(answer)
+
+        print(answer)
 
 def main():
     arg_parser = argparse.ArgumentParser(description='Print the given input file.')
@@ -54,8 +54,8 @@ def main():
             if index.split()[0] != element:
                 nodes[index.split()[0]].append(element.split(","))
     #dict_list = []
-    for node in range(len(nodes)+1):
-        dict_list.append(0)
+    # for node in range(len(nodes)+1):
+    #     dict_list.append(0)
     #dict = {}
     num_processes = mp.cpu_count()
     each_process = (len(nodes)//num_processes) #Number of iterations each process completes
@@ -67,25 +67,25 @@ def main():
             if i == 1:
                 start = (i*2)-1
                 m = mp.Process(target = dij, args = (start, start +each_process+ 1, nodes,
-                                                    dict, dict_list))
+                                                    dict))
                 end = start+each_process+ 1
                 processes.append(m)
                 leftover -= 1
             else:
                 m = mp.Process(target = dij, args = (end, end + each_process+1, nodes,
-                                                    dict, dict_list))
+                                                    dict))
                 end = end + each_process + 1
                 processes.append(m)
                 leftover -= 1
         else:
             if i == 1:
                 m = mp.Process(target = dij, args = (end, end+each_process, nodes,
-                                                    dict,dict_list))
+                                                    dict))
                 end = end + each_process
                 processes.append(m)
             else:
                 m = mp.Process(target = dij, args = (end, end+each_process, nodes,
-                                                    dict, dict_list))
+                                                    dict))
                 end = end + each_process
                 processes.append(m)
     for process in processes:
@@ -93,7 +93,7 @@ def main():
     for process in processes:
         process.join()
 
-    print(dict)
+    #print(dict)
     # for i in range(1, len(nodes)+1):    #Find each node to each other node paths
     #     dij(i, nodes)
 
