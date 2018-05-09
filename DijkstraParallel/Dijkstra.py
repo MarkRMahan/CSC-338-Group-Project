@@ -9,6 +9,7 @@ import random
 import time
 import statistics as stats
 import multiprocessing as mp
+import os.path
 
 #q = mp.Queue()
 
@@ -33,15 +34,17 @@ def dij(i, nodes):
     #Used to get the output in the correct format
     counter = 1
     answer = "{}\t".format(i)
+    f = open('dij_serial{}.txt'.format(len(nodes)), 'a')
+    f.write(str(i)+"\n")
     for distance in path_lengths:
+        f.write(str(counter) + ","+ str(distance) + "\n")
         if counter != len(path_lengths):
             answer += str(counter) + ","+ str(distance) + " "
             counter += 1
         else:
             answer += str(counter)+"," +str(distance)
-
-    print(answer)
-    #q.put(answer)
+    f.write("~ ~ ~ ~\n")
+    f.close()
 
 def main():
     arg_parser = argparse.ArgumentParser(description='Print the given input file.')
@@ -56,7 +59,8 @@ def main():
         for element in index.split():
             if index.split()[0] != element:
                 nodes[index.split()[0]].append(element.split(","))
-
+    if os.path.exists('dij_serial{}.txt'.format(len(nodes))):
+        os.remove('dij_serial{}.txt'.format(len(nodes)))
     for i in range(1, len(nodes)+1):    #Find each node to each other node paths
         dij(i, nodes)
 

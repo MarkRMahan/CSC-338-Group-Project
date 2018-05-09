@@ -31,6 +31,7 @@ def dij(start, end, nodes):
         #Used to get the output in the correct format
         counter = 1
         answer = "{}\t".format(i)
+        # Write output to a file with starting node at top
         f = open('dij_output{}.txt'.format(len(nodes)), 'a')
         f.write(str(i)+"\n")
         #answer = ""
@@ -41,6 +42,7 @@ def dij(start, end, nodes):
                 counter += 1
             else:
                 answer += str(counter)+"," +str(distance)
+        # Separate nodes
         f.write("~ ~ ~ ~\n")
         f.close()
         #print(answer)
@@ -59,10 +61,7 @@ def main():
         for element in index.split():
             if index.split()[0] != element:
                 nodes[index.split()[0]].append(element.split(","))
-    #dict_list = []
-    # for node in range(len(nodes)+1):
-    #     dict_list.append(0)
-    # print(dict_list)
+
     if os.path.exists('dij_output{}.txt'.format(len(nodes))):
         os.remove('dij_output{}.txt'.format(len(nodes)))
     num_processes = mp.cpu_count()
@@ -73,27 +72,22 @@ def main():
     for i in range(1, num_processes+1):
         if leftover != 0:
             if i == 1:
-                start = (i*2)-1
-                m = mp.Process(target = dij, args = (start, start + each_process+ 1, nodes,
-                                                    ))
+                m = mp.Process(target = dij, args = (end, end + each_process+ 1, nodes))
                 end = start+each_process + 1
                 processes.append(m)
                 leftover -= 1
             else:
-                m = mp.Process(target = dij, args = (end, end + each_process + 1, nodes,
-                                                    ))
+                m = mp.Process(target = dij, args = (end, end + each_process + 1, nodes))
                 end = end + each_process + 1
                 processes.append(m)
                 leftover -= 1
         else:
             if i == 1:
-                m = mp.Process(target = dij, args = (end, end+each_process, nodes,
-                                                    ))
+                m = mp.Process(target = dij, args = (end, end + each_process, nodes))
                 end = end + each_process
                 processes.append(m)
             else:
-                m = mp.Process(target = dij, args = (end, end+each_process, nodes,
-                                                    ))
+                m = mp.Process(target = dij, args = (end, end + each_process, nodes))
                 end = end + each_process
                 processes.append(m)
     for process in processes:
