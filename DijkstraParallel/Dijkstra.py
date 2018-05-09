@@ -35,10 +35,10 @@ def dij(i, nodes):
     answer = "{}\t".format(i)
     for distance in path_lengths:
         if counter != len(path_lengths):
-            answer += str(distance) + ","
+            answer += str(counter) + ","+ str(distance) + " "
             counter += 1
         else:
-            answer += str(distance)
+            answer += str(counter)+"," +str(distance)
 
     print(answer)
     #q.put(answer)
