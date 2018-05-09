@@ -87,8 +87,8 @@ if __name__ == '__main__':
 
         with open("input_{}_read.txt".format(i), "w") as f:
             for key in sorted(dictionary[1].keys()):
-                node = "{}".format(key)
+                node = "{}\n".format(key)
                 for connected in dictionary[1][key]:
-                    node += " " + connected
+                    node += " " + connected + "\n"
 
                 f.write(node + "\n")
