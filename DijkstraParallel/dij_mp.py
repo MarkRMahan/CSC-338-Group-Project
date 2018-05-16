@@ -69,6 +69,7 @@ def main():
     processes = []
     leftover = (len(nodes)%num_processes)
     end = (1*2)-1
+    start = (1*2)-1
     for i in range(1, num_processes+1):
         if leftover != 0:
             if i == 1:
